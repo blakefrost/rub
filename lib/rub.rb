@@ -11,17 +11,19 @@ def rub(path)
       result << line
       ended = true
     else
-      indent = line.index(/\S|$/)
-      if indent > indents[-1]
-        indents << indent
-      end
-      while indent < indents[-1]
-        indents.pop
-        unless line =~ /^\s*end\b/
-          result << (" " * indents[-1]) + "end"
+      unless line.length == 0
+        indent = line.index(/\S|$/)
+        if indent > indents[-1]
+          indents << indent
         end
+        while indent < indents[-1]
+          indents.pop
+          unless line =~ /^\s*end\b/
+            result << (" " * indents[-1]) + "end"
+          end
+        end
+        result << line
       end
-      result << line
     end
   end
   (indents.size - 1).times{result << "end"}
